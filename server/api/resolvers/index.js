@@ -86,17 +86,24 @@ module.exports = app => {
        *
        */
       // @TODO: Uncomment these lines after you define the User type with these fields
-      // items() {
-      //   // @TODO: Replace this mock return statement with the correct items from Postgres
-      //   return []
-      //   // -------------------------------
-      // },
-      // borrowed() {
-      //   // @TODO: Replace this mock return statement with the correct items from Postgres
-      //   return []
-      //   // -------------------------------
-      // }
-      // -------------------------------
+      async items(user, args, { pgResource }) {
+        try {
+          const userItems = await pgResource.getItemsForUser(user.id);
+          return userItems;
+        } catch (e) {
+          throw new ApolloError(e);
+        }
+      },
+      async borrowed(user, args, { pgResource }) {
+        try {
+          const userBorrowed = await pgResource.getBorrowedItemsForUser(
+            user.id
+          );
+          return userBorrowed;
+        } catch (e) {
+          throw new ApolloError(e);
+        }
+      }
     },
 
     Item: {
@@ -111,35 +118,35 @@ module.exports = app => {
        *
        */
       // @TODO: Uncomment these lines after you define the Item type with these fields
-      // async itemowner() {
-      //   // @TODO: Replace this mock return statement with the correct user from Postgres
-      //   return {
-      //     id: 29,
-      //     fullname: "Mock user",
-      //     email: "mock@user.com",
-      //     bio: "Mock user. Remove me."
-      //   }
-      //   // -------------------------------
-      // },
-      // async tags() {
-      //   // @TODO: Replace this mock return statement with the correct tags for the queried Item from Postgres
-      //   return []
-      //   // -------------------------------
-      // },
-      // async borrower() {
-      //   /**
-      //    * @TODO: Replace this mock return statement with the correct user from Postgres
-      //    * or null in the case where the item has not been borrowed.
-      //    */
-      //   return null
-      //   // -------------------------------
-      // },
-      // async imageurl({ imageurl, imageid, mimetype, data }) {
-      //   if (imageurl) return imageurl
-      //   if (imageid) {
-      //     return `data:${mimetype};base64, ${data}`
-      //   }
-      // }
+      async itemowner(item, args, { pgResource }) {
+        //   // @TODO: Replace this mock return statement with the correct user from Postgres
+        return {
+          id: 29,
+          fullname: 'Mock user',
+          email: 'mock@user.com',
+          bio: 'Mock user. Remove me.'
+        };
+        //   // -------------------------------
+      },
+      async tags() {
+        //   // @TODO: Replace this mock return statement with the correct tags for the queried Item from Postgres
+        return [];
+        //   // -------------------------------
+      },
+      async borrower() {
+        //   /**
+        //    * @TODO: Replace this mock return statement with the correct user from Postgres
+        //    * or null in the case where the item has not been borrowed.
+        //    */
+        return null;
+        //   // -------------------------------
+      },
+      async imageurl({ imageurl, imageid, mimetype, data }) {
+        if (imageurl) return imageurl;
+        if (imageid) {
+          return `data:${mimetype};base64, ${data}`;
+        }
+      }
       // -------------------------------
     }
 
