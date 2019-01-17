@@ -52,9 +52,14 @@ module.exports = app => {
           throw new ApolloError(e);
         }
       },
-      async items() {
+      async items(parent, { filter }, { pgResource }, info) {
+        try {
+          const items = await pgResource.getItems(filter);
+          return items;
+        } catch (e) {
+          throw new ApolloError(e);
+        }
         // @TODO: Replace this mock return statement with the correct items from Postgres
-        return [];
         // -------------------------------
       },
       async tags(parent, args, { pgResource }, info) {
@@ -165,6 +170,6 @@ module.exports = app => {
     //     user
     //   });
     //   return newItem;
-    // }
   };
 };
+// };
