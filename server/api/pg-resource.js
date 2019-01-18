@@ -74,7 +74,7 @@ module.exports = postgres => {
        */
 
       const findUserQuery = {
-        text: 'SELECT * FROM users WHERE id= $1', // @TODO: Basic queries
+        text: 'SELECT id, email, name AS fullname FROM users WHERE id= $1', // @TODO: Basic queries
         values: [id]
       };
 
@@ -126,12 +126,14 @@ module.exports = postgres => {
       return items.rows;
     },
     async getTags() {
-      const tags = await postgres.query({ text: `SELECT * FROM tags` });
+      const tags = await postgres.query({
+        text: `SELECT id, name AS title FROM tags`
+      });
       return tags.rows;
     },
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: `SELECT * FROM tags WHERE id IN (SELECT tagid FROM itemtags WHERE itemid = $1) = $1`, // @TODO: Advanced queries
+        text: `SELECT id, name AS title FROM tags WHERE id IN (SELECT tagid FROM itemtags WHERE itemid = $1)`,
         values: [id]
       };
 
