@@ -107,17 +107,6 @@ module.exports = app => {
     },
 
     Item: {
-      /**
-       *  @TODO: Advanced resolvers
-       *
-       *  The Item GraphQL type has two fields that are not present in the
-       *  Items table in Postgres: itemowner, tags and borrower.
-       *
-       * According to our GraphQL schema, the itemowner and borrower should return
-       * a User (GraphQL type) and tags should return a list of Tags (GraphQL type)
-       *
-       */
-      // @TODO: Uncomment these lines after you define the Item type with these fields
       async itemowner(item, args, { pgResource }) {
         try {
           const itemOwner = await pgResource.getUserById(item.ownerid);
@@ -125,7 +114,6 @@ module.exports = app => {
         } catch (e) {
           throw new ApolloError(e);
         }
-        //   // -------------------------------
       },
       async tags(item, args, { pgResource }) {
         try {
@@ -134,7 +122,6 @@ module.exports = app => {
         } catch (e) {
           throw new ApolloError(e);
         }
-        //   // -------------------------------
       },
       async borrower() {
         try {
@@ -143,7 +130,6 @@ module.exports = app => {
         } catch (e) {
           throw new ApolloError(e);
         }
-        //   // -------------------------------
       },
       async imageurl({ imageurl, imageid, mimetype, data }) {
         if (imageurl) return imageurl;
@@ -151,36 +137,36 @@ module.exports = app => {
           return `data:${mimetype};base64, ${data}`;
         }
       }
+    },
+
+    Mutation: {
+      // @TODO: Uncomment this later when we add auth
+      // ...authMutations(app),
       // -------------------------------
+
+      async addItem(parent, { filter }, { pgResource }, info) {
+        /**
+         *  @TODO: Destructuring
+         *
+         *  The 'args' and 'context' parameters of this resolver can be destructured
+         *  to make things more readable and avoid duplication.
+         *
+         *  When you're finished with this resolver, destructure all necessary
+         *  parameters in all of your resolver functions.
+         *
+         *  Again, you may look at the user resolver for an example of what
+         *  destructuring should look like.
+         */
+
+        image = await image;
+        const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
+        const newItem = await context.pgResource.saveNewItem({
+          item: args.item,
+          image: args.image,
+          user
+        });
+        return newItem;
+      }
     }
-
-    // Mutation: {
-    // @TODO: Uncomment this later when we add auth
-    // ...authMutations(app),
-    // -------------------------------
-
-    // async addItem(parent, args, context, info) {
-    /**
-     *  @TODO: Destructuring
-     *
-     *  The 'args' and 'context' parameters of this resolver can be destructured
-     *  to make things more readable and avoid duplication.
-     *
-     *  When you're finished with this resolver, destructure all necessary
-     *  parameters in all of your resolver functions.
-     *
-     *  Again, you may look at the user resolver for an example of what
-     *  destructuring should look like.
-     */
-
-    //   image = await image;
-    //   const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
-    //   const newItem = await context.pgResource.saveNewItem({
-    //     item: args.item,
-    //     image: args.image,
-    //     user
-    //   });
-    //   return newItem;
   };
 };
-// };

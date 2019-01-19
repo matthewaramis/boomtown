@@ -141,6 +141,18 @@ module.exports = postgres => {
       return tags.rows;
     },
     async saveNewItem({ item, image, user }) {
+      const newItemQuery = {
+        text:
+          'INSERT INTO items (title, description, tags) VALUES($1, $2, $3) RETURNING *',
+        values: [title, description, tags]
+      };
+      try {
+        const item = await postgres.query(newItemQuery);
+        return item.rows[0];
+      } catch (e) {
+            throw 'There was a problem adding your item.';
+        }
+      },
       /**
        *  @TODO: Adding a New Item
        *
@@ -248,10 +260,9 @@ module.exports = postgres => {
                 throw 'This item already has an image.';
               default:
                 throw e;
-            }
           }
-        });
+        }
       });
-    }
-  };
+    }),
+  }
 };
