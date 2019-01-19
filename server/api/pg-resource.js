@@ -1,11 +1,6 @@
 const strs = require('stringstream');
 
 function tagsQueryString(tags, itemid, result) {
-  /**
-   * Challenge:
-   * This function is recursive, and a little complicated.
-   * Can you refactor it to be simpler / more readable?
-   */
   const length = tags.length;
   return length === 0
     ? `${result};`
@@ -74,19 +69,9 @@ module.exports = postgres => {
        */
 
       const findUserQuery = {
-        text: 'SELECT id, email, name AS fullname FROM users WHERE id= $1', // @TODO: Basic queries
+        text: 'SELECT id, email, name AS fullname FROM users WHERE id= $1',
         values: [id]
       };
-
-      /**
-       *  Refactor the following code using the error handling logic described above.
-       *  When you're done here, ensure all of the resource methods in this file
-       *  include a try catch, and throw appropriate errors.
-       *
-       *  Here is an example throw statement: throw 'User was not found.'
-       *  Customize your throw statements so the message can be used by the client.
-       */
-
       try {
         const user = await postgres.query(findUserQuery);
         if (!user) throw 'User was not found.';
@@ -141,18 +126,6 @@ module.exports = postgres => {
       return tags.rows;
     },
     async saveNewItem({ item, image, user }) {
-      const newItemQuery = {
-        text:
-          'INSERT INTO items (title, description, tags) VALUES($1, $2, $3) RETURNING *',
-        values: [title, description, tags]
-      };
-      try {
-        const item = await postgres.query(newItemQuery);
-        return item.rows[0];
-      } catch (e) {
-            throw 'There was a problem adding your item.';
-        }
-      },
       /**
        *  @TODO: Adding a New Item
        *
@@ -193,6 +166,13 @@ module.exports = postgres => {
                 // Image has been converted, begin saving things
                 const { title, description, tags } = item;
 
+                const newItemQuery = {
+                  text: `INSERT INTO items (title, description, ownerid) VALUES($1, $2, $3) RETURNING *`,
+                  values: [title, description, user.id]
+                };
+
+                const insertNewItem = await postgres.query(newItemQuery);
+
                 // Generate new Item query
                 // @TODO
                 // -------------------------------
@@ -205,7 +185,7 @@ module.exports = postgres => {
                   text:
                     'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
                   values: [
-                    // itemid,
+                    itemid,
                     image.filename,
                     image.mimetype,
                     'base64',
@@ -229,6 +209,18 @@ module.exports = postgres => {
                 // @TODO
                 // -------------------------------
 
+                const tagRelationshipQuery = {
+                  text: `INSERT INTO itemtags(itemid, tagid) VALUES ${tagQueryString(
+                    [...tags],
+                    itemid,
+                    ''
+                  )} RETURNING *`,
+                  values: tags.map(tag => tag.id)
+                };
+
+                const insertNewTagQuery = await postgres.query(
+                  tagRelationshipQuery
+                );
                 // Insert tags
                 // @TODO
                 // -------------------------------
@@ -260,9 +252,10 @@ module.exports = postgres => {
                 throw 'This item already has an image.';
               default:
                 throw e;
+            }
           }
-        }
+        });
       });
-    }),
-  }
+    }
+  };
 };
