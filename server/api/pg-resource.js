@@ -205,10 +205,6 @@ module.exports = postgres => {
                 // @TODO
                 // -------------------------------
 
-                // Generate tag relationships query (use the'tagsQueryString' helper function provided)
-                // @TODO
-                // -------------------------------
-
                 const tagRelationshipQuery = {
                   text: `INSERT INTO itemtags(itemid, tagid) VALUES ${tagQueryString(
                     [...tags],
