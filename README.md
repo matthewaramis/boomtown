@@ -1,5 +1,9 @@
 # Boomtown 🏙
 
+Built by **Matthew Wong** | _matthew.aramis@gmail.com_
+
+This website is meant to be used to share items with other users. Items can be "borrowed" or "lent" to others.
+
 ## Server
 
 Commands must be run from the `server` directory:
@@ -90,4 +94,9 @@ Run all tests:
 npm run test
 ```
 
+## Technology Used
 
+- SQL
+- PostgreSQL
+- Postico
+- Javascript & JQuery
