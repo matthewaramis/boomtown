@@ -9,11 +9,11 @@ import Share from '../pages/Share';
 export default () => (
   <Fragment>
     <Switch>
-      <Route path="/welcome" component={Home} />
+      <Route exact path="/welcome" component={Home} />
 
-      <Route path="/items" component={Items} />
-      <Route path="/profile" component={Profile} />
-      <Route path="/share" component={Share} />
+      <Route exact path="/items" component={Items} />
+      <Route exact path="/profile" component={Profile} />
+      <Route exact path="/share" component={Share} />
       <Redirect to="/Items" />
     </Switch>
 

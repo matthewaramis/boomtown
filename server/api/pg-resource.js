@@ -227,9 +227,7 @@ module.exports = postgres => {
                 if (err) {
                   throw err;
                 }
-                // release the client back to the pool
                 done();
-                // Uncomment this resolve statement when you're ready!
                 resolve(insertNewItem.rows[0]);
                 // -------------------------------
               });
@@ -241,7 +239,6 @@ module.exports = postgres => {
               if (err) {
                 throw err;
               }
-              // release the client back to the pool
               done();
             });
             switch (true) {

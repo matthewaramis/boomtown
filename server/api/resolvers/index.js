@@ -123,7 +123,7 @@ module.exports = app => {
           throw new ApolloError(e);
         }
       },
-      async borrower() {
+      async borrower(item, args, { pgResource }) {
         try {
           const itemBorrower = await pgResource.getUserById(item.borrowerid);
           return itemBorrower;

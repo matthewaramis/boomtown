@@ -24,7 +24,7 @@ const client = new ApolloClient({
       }
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
-    'http://localhost:8080/qraphql'
+    httpWithUploadsLink
 
     /**
      * @TODO: Set your httpWithUploads link as the next item in this array.
