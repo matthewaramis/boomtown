@@ -21,7 +21,7 @@ const Home = ({ classes }) => {
           Boomtown
         </Typography>
         <Typography variant="display4" className={classes.headline}>
-          Share. Borrow. Poop in their pants.
+          Share. Borrow. Prosper.
         </Typography>
       </Grid>
       <Grid item xs={12} sm={12} md={6}>
