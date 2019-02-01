@@ -11,7 +11,7 @@ class ProfileContainer extends Component {
     return (
       <Query query={ALL_USER_ITEMS_QUERY} variables={{ id: 1 }}>
         {({ loading, error, data }) => {
-          // if (loading) return <FullScreenLoader inverted />;
+          if (loading) return <FullScreenLoader inverted />;
           if (error) return <p>{`Error :( ${error.message}`}</p>;
 
           console.log(data);

@@ -79,9 +79,9 @@ module.exports = `
   }
 
   type Mutation {
-    login(user: LoginInput!): User!
+    login(user: Login!): ID!
     logout: Boolean!
-    signup(user: SignupInput!): User!
+    signup(user: NewUser!): ID!
     addItem (item: NewItemInput!, image: Upload!): Item 
   }
 `;
