@@ -13,11 +13,7 @@ const ItemsCard = ({ classes, item }) => {
   return (
     <Card className={classes.card}>
       <Fragment>
-        <CardMedia
-          className={classes.media}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
-        />
+        <CardMedia className={classes.media} image={item.imageurl} />
         <CardContent>
           <Typography gutterBottom component="h2">
             {item.title}
