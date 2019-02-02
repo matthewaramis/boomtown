@@ -19,6 +19,7 @@ import {
   resetItem,
   resetImage
 } from '../../redux/modules/ShareItem';
+import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { validate } from './helpers/validation';
 import { ADD_ITEM_MUTATION } from '../../apollo/queries';
@@ -94,12 +95,26 @@ class ShareItemForm extends Component {
     const { classes, tags, updateItem, resetImage, resetItem } = this.props;
     return (
       <div className="App">
-        <h1>Share. Borrow. Prosper.</h1>
+        <Typography>
+          <h1 className={classes.shareFormHeader}>Share. Borrow. Prosper.</h1>
+        </Typography>
         <Mutation mutation={ADD_ITEM_MUTATION}>
           {addItemMutation => {
             return (
               <Form
-                onSubmit={this.onSubmit}
+                onSubmit={async values => {
+                  addItemMutation({
+                    variables: {
+                      item: {
+                        ...values,
+                        tags: this.state.selectedTags.map(tag => ({
+                          id: tag,
+                          title: ''
+                        }))
+                      }
+                    }
+                  });
+                }}
                 validate={values => {
                   return validate(
                     values,
@@ -114,7 +129,18 @@ class ShareItemForm extends Component {
                   invalid,
                   form
                 }) => (
-                  <form onSubmit={handleSubmit}>
+                  <form
+                    onSubmit={event => {
+                      handleSubmit(event).then(() => {
+                        this.fileInput.current.value = '';
+                        this.setState({ fileSelected: false });
+                        form.reset();
+                        resetItem();
+                        resetImage();
+                        this.setState({ selectedTags: [] });
+                      });
+                    }}
+                  >
                     <FormSpy
                       subscription={{ values: true }}
                       component={({ values }) => {
@@ -127,8 +153,10 @@ class ShareItemForm extends Component {
 
                     {!this.state.fileSelected ? (
                       <Button
+                        className={classes.imageSelectButton}
                         fullWidth
-                        size="small"
+                        variant="contained"
+                        size="medium"
                         color="primary"
                         onClick={() => {
                           this.fileInput.current.click();
@@ -138,8 +166,10 @@ class ShareItemForm extends Component {
                       </Button>
                     ) : (
                       <Button
+                        className={classes.imageResetButton}
                         fullWidth
-                        size="small"
+                        variant="contained"
+                        size="medium"
                         color="primary"
                         onClick={() => {
                           this.fileInput.current.value = '';
@@ -219,6 +249,7 @@ class ShareItemForm extends Component {
                             Add some tags
                           </InputLabel>
                           <Select
+                            className={classes.tagSelector}
                             multiple
                             value={this.state.selectedTags}
                             onChange={this.handleSelectTags}
@@ -253,7 +284,9 @@ class ShareItemForm extends Component {
                     />
 
                     <Button
-                      size="small"
+                      className={classes.shareButton}
+                      variant="contained"
+                      size="medium"
                       color="primary"
                       type="submit"
                       onClick={() => {
@@ -261,6 +294,7 @@ class ShareItemForm extends Component {
                         this.setState({ fileSelected: false });
                         form.reset();
                         resetItem();
+                        resetImage();
                         this.setState({ selectedTags: [] });
                       }}
                       disabled={submitting || pristine || invalid}

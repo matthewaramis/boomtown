@@ -37,8 +37,8 @@ ItemsCard.propTypes = {
 
 ItemsCard.defaultProps = {
   imageurl: 'http://via.placeholder.com/350x250?text=Please select an image',
-  title: 'Name your item',
-  description: 'Describe your item',
+  title: 'Name your item.',
+  description: 'Describe your item.',
   tags: [],
   itemowner: {},
   created: new Date()
