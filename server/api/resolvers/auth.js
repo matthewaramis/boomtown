@@ -16,6 +16,7 @@ function generateToken(user, secret) {
 module.exports = app => {
   return {
     async signup(parent, args, context) {
+      console.log(args);
       try {
         const hashedPassword = await bcrypt.hash(args.user.password, 10);
 
@@ -54,6 +55,7 @@ module.exports = app => {
 
         return user.id;
       } catch (e) {
+        console.log(e);
         throw new AuthenticationError(e);
       }
     },

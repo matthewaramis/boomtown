@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import styles from './styles';
+import { withRouter } from 'react-router-dom';
 
 const ItemsCard = ({ classes, item }) => {
   return (
@@ -44,4 +45,4 @@ ItemsCard.defaultProps = {
   created: new Date()
 };
 
-export default withStyles(styles)(ItemsCard);
+export default withRouter(withStyles(styles)(ItemsCard));

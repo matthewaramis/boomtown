@@ -24,10 +24,6 @@ const styles = theme => ({
   tagSelector: {
     width: '24rem',
     marginBottom: '1rem'
-  },
-
-  shareButton: {
-    color: 'gray'
   }
 });
 
