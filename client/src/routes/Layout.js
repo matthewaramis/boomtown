@@ -13,11 +13,11 @@ export default () => (
   <Fragment>
     <ViewerContext.Consumer>
       {({ viewer, loading }) => {
-        console.log(viewer);
         if (loading) {
           return <FullScreenLoader />;
         }
         if (viewer) {
+          console.log(viewer);
           return (
             <>
               <HeaderBar />
@@ -33,7 +33,7 @@ export default () => (
         } else {
           return (
             <Switch>
-              <Route exact path="/welcome" component={Home} />
+              <Route path="/welcome" component={Home} />
               <Redirect from="*" to="/welcome" />
             </Switch>
           );

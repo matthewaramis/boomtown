@@ -13,7 +13,7 @@ import {
   VIEWER_QUERY
 } from '../../apollo/queries';
 import { graphql, compose } from 'react-apollo';
-// import validate from './helpers/validation';
+import { validate } from './helpers/validation';
 import styles from './styles';
 
 class AccountForm extends Component {
@@ -24,9 +24,32 @@ class AccountForm extends Component {
     };
   }
 
-  onSubmit(values) {
+  onSubmit = async values => {
     console.log(values);
-  }
+    try {
+      this.state.formToggle
+        ? await this.props.loginMutation({
+            variables: {
+              user: {
+                email: values.email,
+                password: values.password
+              }
+            }
+          })
+        : await this.props.signupMutation({
+            variables: {
+              user: {
+                fullname: values.fullname,
+                email: values.email,
+                password: values.password
+              }
+            }
+          });
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  };
 
   render() {
     const { classes } = this.props;
@@ -34,13 +57,11 @@ class AccountForm extends Component {
       <Fragment>
         <Form
           onSubmit={this.onSubmit}
-          render={({ handleSubmit, pristine, submitting, invalid, values }) => (
-            <form
-              onSubmit={() => {
-                console.log('Submitted');
-              }}
-              className={classes.accountForm}
-            >
+          validate={values => {
+            return validate(values, this.state.formToggle);
+          }}
+          render={({ handleSubmit, pristine, submitting, invalid, form }) => (
+            <form onSubmit={handleSubmit} className={classes.accountForm}>
               {!this.state.formToggle && (
                 <Field
                   name="fullname"
@@ -56,6 +77,15 @@ class AccountForm extends Component {
                         value={''}
                         {...input}
                       />
+                      {meta.touched &&
+                        meta.invalid && (
+                          <div
+                            className="error"
+                            style={{ color: 'red', fontSize: '20px' }}
+                          >
+                            {meta.error}
+                          </div>
+                        )}
                     </FormControl>
                   )}
                 />
@@ -74,6 +104,15 @@ class AccountForm extends Component {
                       value={''}
                       {...input}
                     />
+                    {meta.touched &&
+                      meta.invalid && (
+                        <div
+                          className="error"
+                          style={{ color: 'red', fontSize: '20px' }}
+                        >
+                          {meta.error}
+                        </div>
+                      )}
                   </FormControl>
                 )}
               />
@@ -91,6 +130,15 @@ class AccountForm extends Component {
                       value={''}
                       {...input}
                     />
+                    {meta.touched &&
+                      meta.invalid && (
+                        <div
+                          className="error"
+                          style={{ color: 'red', fontSize: '20px' }}
+                        >
+                          {meta.error}
+                        </div>
+                      )}
                   </FormControl>
                 )}
               />
@@ -107,25 +155,6 @@ class AccountForm extends Component {
                     variant="contained"
                     size="large"
                     color="secondary"
-                    onClick={e => {
-                      e.preventDefault();
-                      if (this.state.formToggle) {
-                        this.props.loginMutation({
-                          variables: {
-                            user: {
-                              email: 'go@om.com',
-                              password: 'gomsomsoms'
-                            }
-                          }
-                        });
-                      } else {
-                        this.props.signupMutation({
-                          variables: {
-                            user: {}
-                          }
-                        });
-                      }
-                    }}
                     disabled={submitting || pristine || invalid}
                   >
                     {this.state.formToggle ? 'Enter' : 'Create Account'}
@@ -135,7 +164,7 @@ class AccountForm extends Component {
                       className={classes.formToggle}
                       type="button"
                       onClick={() => {
-                        // @TODO: Reset the form on submit
+                        form.reset();
                         this.setState({
                           formToggle: !this.state.formToggle
                         });
@@ -148,9 +177,7 @@ class AccountForm extends Component {
                   </Typography>
                 </Grid>
               </FormControl>
-              <Typography className={classes.errorMessage}>
-                {/* @TODO: Display sign-up and login errors */}
-              </Typography>
+              <Typography className={classes.errorMessage} />
             </form>
           )}
         />

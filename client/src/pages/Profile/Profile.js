@@ -1,11 +1,20 @@
 import React from 'react';
+import { Card, Typography } from '@material-ui/core';
 
-const Profile = ({ classes }) => {
+const Profile = ({ classes, profile }) => {
+  console.log('pro', profile);
   return (
-    <div>
-      <p>
-        This is the profile page located at <code>/profile/:userId</code>.
-      </p>
+    <div className={classes.profileBody}>
+      <Card className={classes.profileCard}>
+        <Typography className={classes.profileUserText}>
+          {profile.fullname}
+        </Typography>
+        <Typography className={classes.itemShareBorrowText}>
+          <span className={classes.itemCount}>{profile.items}</span> Items
+          shared <span className={classes.itemCount}>{profile.borrowed}</span>{' '}
+          Items borrowed
+        </Typography>
+      </Card>
     </div>
   );
 };

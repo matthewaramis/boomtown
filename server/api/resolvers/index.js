@@ -11,6 +11,7 @@ module.exports = app => {
     Query: {
       viewer(root, args, { token }) {
         if (token) {
+          console.log(token);
           return jwt.decode(token, app.get('JWT_SECRET'));
         }
         return null;
@@ -100,9 +101,9 @@ module.exports = app => {
     Mutation: {
       ...authMutations(app),
 
-      async addItem(parent, args, context, info) {
-        const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
-        const newItem = await context.pgResource.saveNewItem({
+      async addItem(parent, args, { pgResource, token }) {
+        const user = await jwt.decode(token, app.get('JWT_SECRET'));
+        const newItem = await pgResource.saveNewItem({
           item: args.item,
           // image: args.image,
           user

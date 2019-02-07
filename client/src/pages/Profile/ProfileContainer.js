@@ -15,7 +15,7 @@ class ProfileContainer extends Component {
           if (error) return <p>{`Error :( ${error.message}`}</p>;
 
           console.log(data);
-          return <Profile classes={this.props.classes} items={data.users} />;
+          return <Profile classes={this.props.classes} profile={data.user} />;
         }}
       </Query>
     );

@@ -8,7 +8,6 @@ import { Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import { Link, withRouter } from 'react-router-dom';
-import AccountForm from '../AccountForm/AccountForm';
 // import Switch from '@material-ui/core/Switch';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import FormGroup from '@material-ui/core/FormGroup';
@@ -116,9 +115,7 @@ class HeaderBar extends React.Component {
                   <MenuItem
                     onClick={e => {
                       e.preventDefault();
-                      if (this.state.formToggle) {
-                        this.props.logoutMutation({});
-                      }
+                      this.props.logoutMutation({});
                     }}
                   >
                     <PowerSettingsNew />Logout

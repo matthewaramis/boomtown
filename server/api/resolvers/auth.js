@@ -19,7 +19,7 @@ module.exports = app => {
       console.log(args);
       try {
         const hashedPassword = await bcrypt.hash(args.user.password, 10);
-
+        console.log(hashedPassword);
         const user = await context.pgResource.createUser({
           fullname: args.user.fullname,
           email: args.user.email,
@@ -34,12 +34,14 @@ module.exports = app => {
 
         return user.id;
       } catch (e) {
+        console.log('hiih', e);
         throw new AuthenticationError(e);
       }
     },
 
     async login(parent, args, context) {
       try {
+        console.log('>>>>>', args, parent, context);
         const user = await context.pgResource.getUserAndPasswordForVerification(
           args.user.email
         );
@@ -55,7 +57,6 @@ module.exports = app => {
 
         return user.id;
       } catch (e) {
-        console.log(e);
         throw new AuthenticationError(e);
       }
     },

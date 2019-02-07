@@ -1,4 +1,4 @@
-export default function validate(values) {
+export const validate = (values, auth) => {
   const errors = {};
   if (!values.email) {
     errors.email = 'Required';
@@ -10,4 +10,4 @@ export default function validate(values) {
     errors.password = 'Required';
   }
   return errors;
-}
+};

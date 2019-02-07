@@ -20,38 +20,6 @@ npm install
 npm run start:dev
 ```
 
-### Tests
-
-Just linting:
-
-```bash
-npm run lint
-```
-
-Run linting, and fix any errors:
-
-```bash
-npm run lint:fix
-```
-
-Run Jest tests:
-
-```
-npm run jest
-```
-
-Run Jest tests, and watch for changes:
-
-```bash
-npm run jest:watch
-```
-
-Run all tests:
-
-```bash
-npm run test
-```
-
 ## Client
 
 Commands must be run from the `client` directory:
@@ -74,29 +42,13 @@ npm start
 npm run build
 ```
 
-### Tests
-
-Just linting:
-
-```bash
-npm run lint
-```
-
-Run linting, and fix any errors:
-
-```bash
-npm run lint:fix
-```
-
-Run all tests:
-
-```bash
-npm run test
-```
-
 ## Technology Used
 
-- SQL
+- Node.js
 - PostgreSQL
 - Postico
-- Javascript & JQuery
+- Express
+- Apollo
+- GraphQL
+- Terminal
+- Javascript
