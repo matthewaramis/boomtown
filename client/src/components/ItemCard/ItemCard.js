@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import { Avatar, Typography, Grid } from '@material-ui/core';
+import { Avatar, Typography } from '@material-ui/core';
 import styles from './styles';
 import { withRouter } from 'react-router-dom';
 import Gravatar from 'react-gravatar';
@@ -17,7 +17,6 @@ function convertDate(date) {
 }
 
 const ItemsCard = ({ classes, item }) => {
-  console.log(item);
   return (
     <Card className={classes.card}>
       <Fragment>

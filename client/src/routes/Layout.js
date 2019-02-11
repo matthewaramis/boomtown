@@ -17,7 +17,6 @@ export default () => (
           return <FullScreenLoader />;
         }
         if (viewer) {
-          console.log(viewer);
           return (
             <>
               <HeaderBar />
